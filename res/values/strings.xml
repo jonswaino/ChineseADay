@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, ChineseADayActivity!</string>
+    <string name="app_name">ChineseADay</string>
+    <string name="previouscard">Previous</string>
+    <string name="flipcard">Flip Card</string>
+    <string name="nextcard">Next</string>
+    <string name="wrong">Wrong</string>
+    <string name="unsure">Unsure</string>
+    <string name="correct">Correct</string>
+    <string name="knowit">I Know This Character</string>
+    <string name="back">back</string>
+</resources>

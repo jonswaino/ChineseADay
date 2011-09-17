@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:background="#ff00cc"
+	android:baselineAligned="true" android:layout_height="fill_parent"
+	android:gravity="fill" android:orientation="vertical"
+	android:layout_gravity="fill">
+	<ViewFlipper android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:id="@+id/flashcardflipper"
+		android:background="#aaaaaa">
+
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="match_parent" android:orientation="vertical">
+			<TextView android:text="TextView"
+				android:layout_weight="0.75" android:textAppearance="?android:attr/textAppearanceLarge"
+				android:layout_gravity="center|fill" android:layout_width="match_parent"
+				android:layout_height="match_parent" android:gravity="center" android:id="@+id/flashcharacter" android:textSize="150dp"></TextView>
+				
+		    <LinearLayout android:layout_width="match_parent" android:layout_height="64dp">
+		    <Button android:id="@+id/back" android:text="@string/back" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight=".5"></Button>
+			<Button android:layout_width="match_parent"
+				android:text="@string/knowit"
+				android:id="@+id/knowcard" android:layout_height="match_parent" android:layout_weight="0.5"></Button> 
+		    </LinearLayout>
+			
+
+			<LinearLayout android:id="@+id/initiallayout"
+				android:layout_width="match_parent" android:background="#eeeeee"
+				android:gravity="bottom" android:layout_gravity="center|center_vertical|bottom"
+				android:orientation="horizontal" android:layout_height="62dp">
+				<Button android:id="@+id/previouscard" android:layout_height="fill_parent"
+					android:layout_width="0dp" android:layout_weight="1"
+					android:text="@string/previouscard"></Button>
+				<Button android:id="@+id/flipcard" android:layout_height="fill_parent"
+					android:layout_width="0dp" android:layout_weight="1" android:text="@string/flipcard"></Button>
+				<Button android:id="@+id/nextcard" android:layout_height="fill_parent"
+					android:layout_width="0dp" android:layout_weight="1" android:text="@string/nextcard"></Button>
+			</LinearLayout>
+		</LinearLayout>
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="match_parent" android:orientation="vertical">
+			<TextView android:id="@+id/textView2" android:text="TextView"
+				android:layout_weight="0.75" android:textAppearance="?android:attr/textAppearanceLarge"
+				android:layout_gravity="center|fill" android:layout_width="match_parent"
+				android:layout_height="match_parent" android:gravity="center"></TextView>
+
+			<LinearLayout android:id="@+id/reveallayout"
+				android:layout_width="match_parent" android:background="#eeeeee"
+				android:gravity="bottom" android:layout_gravity="center|center_vertical|bottom"
+				android:orientation="horizontal" android:layout_height="62dp">
+				<Button android:layout_height="fill_parent"
+					android:layout_width="0dp" android:layout_weight="1" android:text="@string/wrong" android:id="@+id/wrong"></Button>
+				<Button android:layout_height="fill_parent"
+					android:layout_width="0dp" android:layout_weight="1" android:text="@string/unsure" android:id="@+id/unsure"></Button>
+				<Button android:layout_height="fill_parent"
+					android:layout_width="0dp" android:layout_weight="1" android:text="@string/correct" android:id="@+id/correct"></Button>
+			</LinearLayout>
+		</LinearLayout>
+	</ViewFlipper>
+	<!-- <ViewFlipper android:layout_width="fill_parent" android:layout_height="fill_parent" 
+		android:id="@+id/revealcard" android:background="#aaaaaa"> </ViewFlipper> -->
+
+</LinearLayout>
