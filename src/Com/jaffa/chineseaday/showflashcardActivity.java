@@ -3,6 +3,8 @@ package Com.jaffa.chineseaday;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +21,7 @@ public class showflashcardActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.showflashcard);
 
 		charValue = 0x4E00;
@@ -41,7 +44,7 @@ public class showflashcardActivity extends Activity {
 	
 		// chinese unicode characters 4E00..U+9FFF
 		
-		ShowCharacter();
+	//	ShowCharacter();
 		
 		btnNext.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {					
@@ -100,12 +103,29 @@ public class showflashcardActivity extends Activity {
 		});
 	}
 	
+	private String GetCharacterValue() {
+		DbHelper dbHelper = new DbHelper(getApplicationContext());
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		
+		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, " id > 100 ", null, null,null,null);
+		startManagingCursor(cursor);
+			
+		String character = null;
+		while (cursor.moveToNext())
+		{
+			character = cursor.getString(DbHelper.C_CHARACTER);
+		}
+		
+		StringBuilder sbChars = new StringBuilder(character);
+		return sbChars.toString();
+	}
+	
 	private void ShowCharacter() {
 		StringBuilder sbChars = new StringBuilder();
 		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
 		
-		sbChars.append(new Character((char) charValue));
-		flashcharacter.setText(sbChars.toString());
+		//sbChars.append(new Character((char) charValue));
+		flashcharacter.setText(GetCharacterValue());
 	}
 	
 	private void ShowRevalCharacter() {

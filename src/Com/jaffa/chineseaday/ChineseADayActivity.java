@@ -1,5 +1,7 @@
 package Com.jaffa.chineseaday;
 
+import java.io.IOException;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +11,22 @@ import android.widget.ListView;
 
 public class ChineseADayActivity extends ListActivity {
     /** Called when the activity is first created. */
+	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // Need to call dbhelper get to force check for db
+        //new DbHelper(this).getReadableDatabase();               
+        
+        try {
+			new DbHelper(this).createDataBase();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+                
 		// Create an array of Strings, that will be put to our ListActivity
 		String[] names = new String[] { 
 				"100 characters",
