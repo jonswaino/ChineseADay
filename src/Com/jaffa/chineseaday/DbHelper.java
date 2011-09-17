@@ -36,28 +36,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "onCreate called");
-		
-		// TODO Auto-generated method stub
-		
+				
 		try {
 			Log.d(TAG, "Copying database...");
 			copyDataBase();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
-//		if (!checkDataBase())
-//		{
-//			try {
-//				Log.d(TAG, "Copying database...");
-//				copyDataBase();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		}		
 	}
 
 	@Override
@@ -77,16 +63,6 @@ public class DbHelper extends SQLiteOpenHelper {
 	        //By calling this method and empty database will be created into the default system path
 	           //of your application so we are gonna be able to overwrite that database with our database.
 	        this.getWritableDatabase();
-
-//	        try {
-//
-//	           // copyDataBase();
-//
-//	        } catch (IOException e) {
-//
-//	            throw new Error("Error copying database");
-//
-//	        }
 	    }
 
 	}
@@ -134,7 +110,6 @@ public class DbHelper extends SQLiteOpenHelper {
     	//Close the streams
     	myOutput.flush();
     	myOutput.close();
-    	myInput.close();
- 
+    	myInput.close(); 
     }
 }
