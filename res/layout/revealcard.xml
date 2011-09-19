@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="match_parent" android:orientation="vertical"
+		android:background="#C0C0C0">
+		<TextView android:text="TextView" android:layout_weight="0.75"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center|fill" android:layout_width="match_parent"
+			android:textColor="#000000" android:layout_height="match_parent"
+			android:gravity="center" android:id="@+id/flashcharacter"
+			android:textSize="70dp"></TextView>
+		<LinearLayout android:id="@+id/linearLayout1"
+			android:layout_width="match_parent" android:orientation="vertical"  android:layout_height="249dp" android:weightSum="1">
+			<LinearLayout android:layout_height="wrap_content" android:layout_weight="0.42" android:id="@+id/LinearLayout01" android:layout_width="match_parent" android:orientation="vertical">
+				<TextView android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="#000000" android:id="@+id/textView1" android:text="TextView" android:layout_gravity="center" android:gravity="center" android:layout_width="match_parent" android:layout_height="match_parent"></TextView>
+			</LinearLayout>
+			<LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="match_parent" android:orientation="vertical" android:layout_weight="0.42">
+				<TextView android:layout_height="match_parent" android:textColor="#000000" android:layout_width="match_parent" android:layout_gravity="center" android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="center" android:id="@+id/TextView01" android:text="TextView"></TextView>
+			</LinearLayout>
+
+		</LinearLayout>
+		
+
+		<LinearLayout android:id="@+id/reveallayout"
+			android:layout_width="match_parent" android:background="#eeeeee"
+			android:gravity="bottom" android:layout_gravity="center|center_vertical|bottom"
+			android:orientation="horizontal" android:layout_height="62dp">
+			<Button android:layout_height="fill_parent"
+				android:layout_width="0dp" android:layout_weight="1" android:text="@string/wrong"
+				android:id="@+id/wrong" android:background="#FF0000"></Button>
+			<Button android:layout_height="fill_parent"
+				android:layout_width="0dp" android:layout_weight="1" android:text="@string/unsure"
+				android:id="@+id/unsure" android:background="#FFFF00"></Button>
+			<Button android:layout_height="fill_parent"
+				android:layout_width="0dp" android:layout_weight="1" android:text="@string/correct"
+				android:id="@+id/correct" android:background="#00FF00"></Button>
+		</LinearLayout>
+	</LinearLayout>
+</LinearLayout>
