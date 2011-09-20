@@ -19,13 +19,27 @@ import android.widget.ViewFlipper;
 
 public class showflashcardActivity extends Activity {
 
+	private final int MAX_SERIES = 100;
+	
 	DbHelper dbHelper;
 	SQLiteDatabase db;
 	ViewFlipper thisflipper;
-
+	List<CharacterEntry> series;
+	List<Integer> randomSeries;
+	int currentCard = 0;
+	
+	@Override
+	public void onDestroy()
+	{
+		db.close();
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		series = new ArrayList<CharacterEntry>();
+		randomSeries = new ArrayList<Integer>(MAX_SERIES);
 		
 		dbHelper = new DbHelper(getApplicationContext());
 		db = dbHelper.getReadableDatabase();
@@ -114,31 +128,57 @@ public class showflashcardActivity extends Activity {
 		return randomValue;
 	}
 	
-	private String GetCharacterValue() {
-
+	private void LoadInCharacterSeries() {
 		
-
+		
 		String whereClause = String.format("id > %d", GenerateRandomValue(1, 100));
-		
 		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 		startManagingCursor(cursor);
+		
+		while (cursor.moveToNext())
+		{
+			CharacterEntry entry = new CharacterEntry();
 			
-		String character = null;
-		cursor.moveToFirst();
-		
-		character = cursor.getString(DbHelper.C_CHARACTER);
-		
-		
-		StringBuilder sbChars = new StringBuilder(character);
-		return sbChars.toString();
+			entry.Character = cursor.getString(dbHelper.C_CHARACTER);
+			entry.Definition = cursor.getString(dbHelper.C_DEFINITION);
+			entry.Pinyin = cursor.getString(dbHelper.C_PINYIN);
+			
+			series.add(entry);
+		}
+				
 	}
 	
+//	private String GetCharacterValue() {
+//		
+//		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
+//		startManagingCursor(cursor);
+//			
+//		String character = null;
+//		cursor.moveToFirst();
+//		
+//		character = cursor.getString(DbHelper.C_CHARACTER);
+//		
+//		
+//		StringBuilder sbChars = new StringBuilder(character);
+//		return sbChars.toString();
+//	}
+//	
 	private void ShowCharacter() {
+		
+		if ( currentCard < MAX_SERIES)
+			currentCard++;
+		else
+			currentCard = 1;
+		
 		StringBuilder sbChars = new StringBuilder();
 		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
 		
+		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard));
+				
 		//sbChars.append(new Character((char) charValue));
-		flashcharacter.setText(GetCharacterValue());
+		//flashcharacter.setText(GetCharacterValue());
+		flashcharacter.setText(currentEntry.Character);
+		
 	}
 	
 	private void ShowRevalCharacter() {
@@ -148,4 +188,32 @@ public class showflashcardActivity extends Activity {
 //		sbChars.append(new Character((char) charValue));
 //		flashcharacter.setText(sbChars.toString());
 	}
+	
+	private void GenerateRandomSeries() {
+		
+//		List<Integer> normalSeries = new ArrayList<Integer>(MAX_SERIES);
+//		
+//		for (int i=0; i<=MAX_SERIES;i++)
+//		{			 
+//			normalSeries.add(new Integer(i));	
+//		}
+				
+		
+		//boolean done = false;
+		int toDo = MAX_SERIES;
+		
+		while (toDo>0)
+		{
+			int randomValue = GenerateRandomValue(1,MAX_SERIES);
+			if ( !randomSeries.contains(randomValue))
+			{
+				toDo--;
+				//normalSeries.remove(randomValue);
+				randomSeries.add(new Integer(randomValue));
+			}			
+		}
+		
+	}
+	
+	
 }
