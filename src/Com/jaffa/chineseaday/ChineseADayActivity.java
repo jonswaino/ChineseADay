@@ -17,30 +17,7 @@ public class ChineseADayActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // Need to call dbhelper get to force check for db
-        //new DbHelper(this).getReadableDatabase();               
-//        try {
-//			new DbHelper(this).copyImageFile();
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-        
-//        try {
-//			new DbHelper(this).createDataBase();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-        
-//        try {
-//			new DbHelper(this).createDataBase();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-        
+                
         DbHelper myDbHelper =  new DbHelper(this);
  
         try {
@@ -81,11 +58,7 @@ public class ChineseADayActivity extends ListActivity {
     @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// Get the item that was clicked
-		
-		//Object o = this.getListAdapter().getItem(position);
-		//String keyword = o.toString();
-		
+
 		Intent startCardsIntent = new Intent(this, showflashcardActivity.class);
 		startActivity(startCardsIntent);
 		

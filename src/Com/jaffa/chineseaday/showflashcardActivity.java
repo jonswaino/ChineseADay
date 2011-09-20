@@ -1,5 +1,9 @@
 package Com.jaffa.chineseaday;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,16 +19,18 @@ import android.widget.ViewFlipper;
 
 public class showflashcardActivity extends Activity {
 
+	DbHelper dbHelper;
+	SQLiteDatabase db;
 	ViewFlipper thisflipper;
-	int charValue;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.showflashcard);
-
-		charValue = 0x4E00;
+		dbHelper = new DbHelper(getApplicationContext());
+		db = dbHelper.getReadableDatabase();
+				
+		setContentView(R.layout.showflashcard);		
 
 		Button btnNext = (Button) findViewById(R.id.nextcard);
 		Button btnPrevious = (Button) findViewById(R.id.previouscard);
@@ -44,11 +50,8 @@ public class showflashcardActivity extends Activity {
 	
 		// chinese unicode characters 4E00..U+9FFF
 		
-	//	ShowCharacter();
-		
 		btnNext.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {					
-				charValue++;
 				ShowCharacter();
 			}
 		});
@@ -103,18 +106,28 @@ public class showflashcardActivity extends Activity {
 		});
 	}
 	
-	private String GetCharacterValue() {
-		DbHelper dbHelper = new DbHelper(getApplicationContext());
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+	private int GenerateRandomValue(int minValue, int maxValue)
+	{
+		Random r = new Random();
+		int randomValue = r.nextInt(maxValue-minValue) + minValue;
 		
-		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, " id > 100 ", null, null,null,null);
+		return randomValue;
+	}
+	
+	private String GetCharacterValue() {
+
+		
+
+		String whereClause = String.format("id > %d", GenerateRandomValue(1, 100));
+		
+		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 		startManagingCursor(cursor);
 			
 		String character = null;
-		while (cursor.moveToNext())
-		{
-			character = cursor.getString(DbHelper.C_CHARACTER);
-		}
+		cursor.moveToFirst();
+		
+		character = cursor.getString(DbHelper.C_CHARACTER);
+		
 		
 		StringBuilder sbChars = new StringBuilder(character);
 		return sbChars.toString();
@@ -129,10 +142,10 @@ public class showflashcardActivity extends Activity {
 	}
 	
 	private void ShowRevalCharacter() {
-		StringBuilder sbChars = new StringBuilder();
-		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
-		
-		sbChars.append(new Character((char) charValue));
-		flashcharacter.setText(sbChars.toString());
+//		StringBuilder sbChars = new StringBuilder();
+//		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
+//		
+//		sbChars.append(new Character((char) charValue));
+//		flashcharacter.setText(sbChars.toString());
 	}
 }
