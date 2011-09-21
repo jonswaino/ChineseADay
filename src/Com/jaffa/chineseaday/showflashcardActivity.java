@@ -26,7 +26,7 @@ public class showflashcardActivity extends Activity {
 	ViewFlipper thisflipper;
 	List<CharacterEntry> series;
 	List<Integer> randomSeries;
-	int currentCard = 0;
+	int currentCard = 1;
 	
 	@Override
 	public void onDestroy()
@@ -62,10 +62,26 @@ public class showflashcardActivity extends Activity {
 		// thisflipper.setOutAnimation(AnimationUtils.loadAnimation(this,
 		// android.R.anim.fade_out));
 	
-		// chinese unicode characters 4E00..U+9FFF
+		LoadInCharacterSeries();
+		GenerateRandomSeries();
 		
+		
+		ShowCharacter();
+		
+		
+		/// Click listeners
 		btnNext.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {					
+			public void onClick(View v) {
+				NextCharacter();
+				ShowCharacter();
+			}
+		});
+		
+		btnPrevious.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				PreviousCharacter();
 				ShowCharacter();
 			}
 		});
@@ -123,15 +139,19 @@ public class showflashcardActivity extends Activity {
 	private int GenerateRandomValue(int minValue, int maxValue)
 	{
 		Random r = new Random();
-		int randomValue = r.nextInt(maxValue-minValue) + minValue;
+		int randomValue = r.nextInt(maxValue-minValue + 1) + minValue;
 		
 		return randomValue;
 	}
 	
 	private void LoadInCharacterSeries() {
 		
+		int startSeries;
+		int endSeries;
 		
-		String whereClause = String.format("id > %d", GenerateRandomValue(1, 100));
+		startSeries = 1; endSeries = MAX_SERIES;
+		
+		String whereClause = String.format("rowid >= %d and rowid <= %d", startSeries, endSeries);
 		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 		startManagingCursor(cursor);
 		
@@ -145,7 +165,8 @@ public class showflashcardActivity extends Activity {
 			
 			series.add(entry);
 		}
-				
+		
+		int foo = 1;
 	}
 	
 //	private String GetCharacterValue() {
@@ -164,29 +185,31 @@ public class showflashcardActivity extends Activity {
 //	}
 //	
 	private void ShowCharacter() {
+				
+		StringBuilder sbChars = new StringBuilder();
+		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
 		
+		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard-1));
+		flashcharacter.setText(currentEntry.Character);	
+	}
+	
+	private void NextCharacter() {
+	
 		if ( currentCard < MAX_SERIES)
 			currentCard++;
 		else
 			currentCard = 1;
-		
-		StringBuilder sbChars = new StringBuilder();
-		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
-		
-		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard));
-				
-		//sbChars.append(new Character((char) charValue));
-		//flashcharacter.setText(GetCharacterValue());
-		flashcharacter.setText(currentEntry.Character);
-		
+	}
+	
+	private void PreviousCharacter() {
+		if ( currentCard == 0 )
+			currentCard = MAX_SERIES;			
+		else
+			currentCard--;
 	}
 	
 	private void ShowRevalCharacter() {
-//		StringBuilder sbChars = new StringBuilder();
-//		TextView flashcharacter = (TextView) findViewById(R.id.flashcharacter);
-//		
-//		sbChars.append(new Character((char) charValue));
-//		flashcharacter.setText(sbChars.toString());
+
 	}
 	
 	private void GenerateRandomSeries() {
