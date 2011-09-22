@@ -30,6 +30,8 @@ public class showflashcardActivity extends Activity {
 	ViewFlipper thisflipper;
 	List<CharacterEntry> series;
 	List<Integer> randomSeries;
+	
+	int MaxCard = MAX_SERIES;
 	int currentCard = 1;
 	
 	// controls
@@ -48,7 +50,7 @@ public class showflashcardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		series = new ArrayList<CharacterEntry>();
-		randomSeries = new ArrayList<Integer>(MAX_SERIES);
+		randomSeries = new ArrayList<Integer>(MaxCard);
 		
 		dbHelper = new DbHelper(getApplicationContext());
 		db = dbHelper.getReadableDatabase();
@@ -57,7 +59,7 @@ public class showflashcardActivity extends Activity {
 
 		// setup progress bar
 		bar = (ProgressBar) findViewById(R.id.progressBar);
-		bar.setMax(MAX_SERIES);
+		bar.setMax(MaxCard);
 			
 		
 		Button btnNext = (Button) findViewById(R.id.nextcard);
@@ -133,6 +135,12 @@ public class showflashcardActivity extends Activity {
 
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
+				
+				// now remove character from list
+				series.remove(currentCard);
+				randomSeries.remove(currentCard);
+				
+				MaxCard--;				
 			}
 		});
 
@@ -169,7 +177,7 @@ public class showflashcardActivity extends Activity {
 		int startSeries;
 		int endSeries;
 		
-		startSeries = 1; endSeries = MAX_SERIES;
+		startSeries = 1; endSeries = MaxCard;
 		
 		String whereClause = String.format("rowid >= %d and rowid <= %d", startSeries, endSeries);
 		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
@@ -232,7 +240,7 @@ public class showflashcardActivity extends Activity {
 	
 	private void NextCharacter() {
 			
-		if ( currentCard < MAX_SERIES)
+		if ( currentCard < MaxCard)
 			currentCard++;
 		else
 			currentCard = 1;
@@ -243,7 +251,7 @@ public class showflashcardActivity extends Activity {
 	private void PreviousCharacter() {
 		
 		if ( currentCard == 1 )
-			currentCard = MAX_SERIES;			
+			currentCard = MaxCard;			
 		else
 			currentCard--;
 		
@@ -263,11 +271,11 @@ public class showflashcardActivity extends Activity {
 				
 		
 		//boolean done = false;
-		int toDo = MAX_SERIES;
+		int toDo = MaxCard;
 		
 		while (toDo>0)
 		{
-			int randomValue = GenerateRandomValue(1,MAX_SERIES);
+			int randomValue = GenerateRandomValue(1,MaxCard);
 			if ( !randomSeries.contains(randomValue))
 			{
 				toDo--;
