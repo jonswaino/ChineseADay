@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -20,6 +22,8 @@ import android.widget.ViewFlipper;
 public class showflashcardActivity extends Activity {
 
 	private final int MAX_SERIES = 100;
+
+	private final String TAG = "showflashcardActivity";
 	
 	DbHelper dbHelper;
 	SQLiteDatabase db;
@@ -28,9 +32,14 @@ public class showflashcardActivity extends Activity {
 	List<Integer> randomSeries;
 	int currentCard = 1;
 	
+	// controls
+	ProgressBar bar;
+	
 	@Override
 	public void onDestroy()
 	{
+		super.onDestroy();
+		
 		db.close();
 	}
 	
@@ -46,6 +55,11 @@ public class showflashcardActivity extends Activity {
 				
 		setContentView(R.layout.showflashcard);		
 
+		// setup progress bar
+		bar = (ProgressBar) findViewById(R.id.progressBar);
+		bar.setMax(MAX_SERIES);
+			
+		
 		Button btnNext = (Button) findViewById(R.id.nextcard);
 		Button btnPrevious = (Button) findViewById(R.id.previouscard);
 
@@ -55,8 +69,13 @@ public class showflashcardActivity extends Activity {
 		Button btnCorrect = (Button) findViewById(R.id.correct);
 		Button btnUnsure = (Button) findViewById(R.id.unsure);
 		Button btnBack = (Button) findViewById(R.id.back);
+		
+		TextView flashcharacter = (TextView) findViewById(R.id.revealCharacter);
+		TextView pinyin = (TextView) findViewById(R.id.revealPinyin);
+		TextView definition = (TextView) findViewById(R.id.revealDefinition);
 
 		thisflipper = (ViewFlipper) findViewById(R.id.flashcardflipper);
+				
 		// thisflipper.setInAnimation(AnimationUtils.loadAnimation(this,
 		// android.R.anim.fade_in));
 		// thisflipper.setOutAnimation(AnimationUtils.loadAnimation(this,
@@ -89,7 +108,8 @@ public class showflashcardActivity extends Activity {
 		btnFlipCard.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
-				thisflipper.showNext();
+				thisflipper.showNext();				
+				ShowRevealCharacter();
 			}
 		});
 
@@ -191,26 +211,46 @@ public class showflashcardActivity extends Activity {
 		
 		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard-1));
 		flashcharacter.setText(currentEntry.Character);	
+		
+		bar.setProgress(currentCard);
+	}
+	
+	private void ShowRevealCharacter() {
+		
+		StringBuilder sbChars = new StringBuilder();
+		TextView flashcharacter = (TextView) findViewById(R.id.revealCharacter);
+		TextView pinyin = (TextView) findViewById(R.id.revealPinyin);
+		TextView definition = (TextView) findViewById(R.id.revealDefinition);
+		
+		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard-1));
+		flashcharacter.setText(currentEntry.Character);
+		
+		pinyin.setText(currentEntry.Pinyin);
+		definition.setText(currentEntry.Definition);
+			
 	}
 	
 	private void NextCharacter() {
-	
+			
 		if ( currentCard < MAX_SERIES)
 			currentCard++;
 		else
 			currentCard = 1;
+		
+		Log.d(TAG, "Next char idx now: " + currentCard);
 	}
 	
 	private void PreviousCharacter() {
-		if ( currentCard == 0 )
+		
+		if ( currentCard == 1 )
 			currentCard = MAX_SERIES;			
 		else
 			currentCard--;
+		
+		Log.d(TAG, "Prev char idx now: " + currentCard);
 	}
 	
-	private void ShowRevalCharacter() {
 
-	}
 	
 	private void GenerateRandomSeries() {
 		

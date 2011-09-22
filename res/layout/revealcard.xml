@@ -9,15 +9,14 @@
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:layout_gravity="center|fill" android:layout_width="match_parent"
 			android:textColor="#000000" android:layout_height="match_parent"
-			android:gravity="center" android:id="@+id/flashcharacter"
-			android:textSize="70dp"></TextView>
+			android:gravity="center" android:textSize="70dp" android:id="@+id/revealCharacter"></TextView>
 		<LinearLayout android:id="@+id/linearLayout1"
 			android:layout_width="match_parent" android:orientation="vertical"  android:layout_height="249dp" android:weightSum="1">
 			<LinearLayout android:layout_height="wrap_content" android:layout_weight="0.42" android:id="@+id/LinearLayout01" android:layout_width="match_parent" android:orientation="vertical">
-				<TextView android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="#000000" android:id="@+id/textView1" android:text="TextView" android:layout_gravity="center" android:gravity="center" android:layout_width="match_parent" android:layout_height="match_parent"></TextView>
+				<TextView android:textAppearance="?android:attr/textAppearanceMedium" android:textColor="#000000" android:text="TextView" android:layout_gravity="center" android:gravity="center" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/revealPinyin"></TextView>
 			</LinearLayout>
 			<LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayout2" android:layout_width="match_parent" android:orientation="vertical" android:layout_weight="0.42">
-				<TextView android:layout_height="match_parent" android:textColor="#000000" android:layout_width="match_parent" android:layout_gravity="center" android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="center" android:id="@+id/TextView01" android:text="TextView"></TextView>
+				<TextView android:layout_height="match_parent" android:textColor="#000000" android:layout_width="match_parent" android:layout_gravity="center" android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="center" android:text="TextView" android:id="@+id/revealDefinition"></TextView>
 			</LinearLayout>
 
 		</LinearLayout>
