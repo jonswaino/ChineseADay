@@ -34,7 +34,6 @@ public final class R {
         public static final int revealDefinition=0x7f050005;
         public static final int revealPinyin=0x7f050003;
         public static final int reveallayout=0x7f050006;
-        public static final int textView2=0x7f050016;
         public static final int unsure=0x7f050008;
         public static final int wrong=0x7f050007;
     }
