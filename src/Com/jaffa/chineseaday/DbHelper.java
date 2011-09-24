@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -61,21 +63,35 @@ public class DbHelper extends SQLiteOpenHelper {
 		if (dbExist) {
 			// do nothing - database already exist
 		} else {
-
 			this.getReadableDatabase();
 
 			try {
-
 				copyDataBase();
-
 			} catch (IOException e) {
-
 				throw new Error("Error copying database");
-
 			}
-
 		}
-
+	}
+	
+	public void AddCharacterToLearntList(int charId)
+	{		
+		ContentValues values = new ContentValues();
+		
+		values.put("read",1);		
+	    String charArg = Integer.toString(charId);
+	    myDataBase.update(DB_CHARTABLE, values, "id = ?", new String[] {charArg });	    		
+	}
+	
+	public Cursor GetCharacterSeries(int startSeries, int endSeries) 
+	{
+		String whereClause = String.format("rowid >= %d and rowid <= %d and read is null", startSeries, endSeries);		
+		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
+	}
+	
+	public Cursor GetLearntCharacters() 
+	{
+		String whereClause = "read = 1";                                                          
+		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 	}
 
 	private boolean checkDataBase() {
@@ -101,28 +117,6 @@ public class DbHelper extends SQLiteOpenHelper {
 		return checkDB != null ? true : false;
 	}
 
-	// public void copyImageFile() throws IOException
-	// {
-	// InputStream myInput = myContext.getAssets().open("cadtest.sqlite");
-	//
-	// // Path to the just created empty db
-	// String outFileName = DB_PATH + "cadtest.sqlite";
-	//
-	// //Open the empty db as the output stream
-	// OutputStream myOutput = new FileOutputStream(outFileName);
-	//
-	// //transfer bytes from the inputfile to the outputfile
-	// byte[] buffer = new byte[2048];
-	// int length;
-	// while ((length = myInput.read(buffer))>0){
-	// myOutput.write(buffer, 0, length);
-	// }
-	//
-	// //Close the streams
-	// myOutput.flush();
-	// myOutput.close();
-	// myInput.close();
-	// }
 
 	private void copyDataBase() throws IOException {
 

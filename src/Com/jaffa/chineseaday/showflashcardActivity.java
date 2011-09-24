@@ -33,6 +33,7 @@ public class showflashcardActivity extends Activity {
 	
 	int MaxCard = MAX_SERIES;
 	int currentCard = 1;
+	int charsLearnt = 0;
 	
 	// controls
 	ProgressBar bar;
@@ -140,28 +141,40 @@ public class showflashcardActivity extends Activity {
 				series.remove(currentCard);
 				randomSeries.remove(currentCard);
 				
-				MaxCard--;				
+				MaxCard--;	
+				
+				dbHelper.AddCharacterToLearntList(series.get(currentCard).Id);
+				
+				charsLearnt++;
 			}
 		});
 
 		btnUnsure.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				thisflipper.showNext();
+				ReturnToInitialView();
 			}
 		});
 		btnCorrect.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				thisflipper.showNext();
+				ReturnToInitialView();
 			}
 		});
 		btnWrong.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				thisflipper.showNext();
+				ReturnToInitialView();
 			}
 		});
+	}
+	
+	private void ReturnToInitialView()
+	{		
+		thisflipper.showNext();
+	
+		NextCharacter();
+		ShowCharacter();
 	}
 	
 	private int GenerateRandomValue(int minValue, int maxValue)
@@ -180,7 +193,8 @@ public class showflashcardActivity extends Activity {
 		startSeries = 1; endSeries = MaxCard;
 		
 		String whereClause = String.format("rowid >= %d and rowid <= %d", startSeries, endSeries);
-		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
+		
+		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);	
 		startManagingCursor(cursor);
 		
 		while (cursor.moveToNext())
@@ -197,21 +211,7 @@ public class showflashcardActivity extends Activity {
 		int foo = 1;
 	}
 	
-//	private String GetCharacterValue() {
-//		
-//		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
-//		startManagingCursor(cursor);
-//			
-//		String character = null;
-//		cursor.moveToFirst();
-//		
-//		character = cursor.getString(DbHelper.C_CHARACTER);
-//		
-//		
-//		StringBuilder sbChars = new StringBuilder(character);
-//		return sbChars.toString();
-//	}
-//	
+
 	private void ShowCharacter() {
 				
 		StringBuilder sbChars = new StringBuilder();
@@ -220,7 +220,9 @@ public class showflashcardActivity extends Activity {
 		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard-1));
 		flashcharacter.setText(currentEntry.Character);	
 		
-		bar.setProgress(currentCard);
+		// num left to learn
+		bar.setProgress(charsLearnt+1);
+		//bar.setProgress(currentCard);
 	}
 	
 	private void ShowRevealCharacter() {
@@ -261,14 +263,7 @@ public class showflashcardActivity extends Activity {
 
 	
 	private void GenerateRandomSeries() {
-		
-//		List<Integer> normalSeries = new ArrayList<Integer>(MAX_SERIES);
-//		
-//		for (int i=0; i<=MAX_SERIES;i++)
-//		{			 
-//			normalSeries.add(new Integer(i));	
-//		}
-				
+			
 		
 		//boolean done = false;
 		int toDo = MaxCard;
