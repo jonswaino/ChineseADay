@@ -42,6 +42,7 @@ public class showflashcardActivity extends Activity {
 	public void onDestroy()
 	{
 		super.onDestroy();
+		dbHelper.close();
 		
 		db.close();
 	}
@@ -54,7 +55,8 @@ public class showflashcardActivity extends Activity {
 		randomSeries = new ArrayList<Integer>(MaxCard);
 		
 		dbHelper = new DbHelper(getApplicationContext());
-		db = dbHelper.getReadableDatabase();
+		dbHelper.open();
+		//db = dbHelper.getReadableDatabase();
 				
 		setContentView(R.layout.showflashcard);		
 
@@ -137,6 +139,7 @@ public class showflashcardActivity extends Activity {
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
 				
+
 				dbHelper.AddCharacterToLearntList(series.get(currentCard).Id);
 				
 				// now remove character from list
@@ -187,14 +190,10 @@ public class showflashcardActivity extends Activity {
 	
 	private void LoadInCharacterSeries() {
 		
-		int startSeries;
-		int endSeries;
+		int startSeries = 1;
+		int endSeries = MaxCard;		
 		
-		startSeries = 1; endSeries = MaxCard;
-		
-		String whereClause = String.format("rowid >= %d and rowid <= %d", startSeries, endSeries);
-		
-		Cursor cursor = db.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);	
+		Cursor cursor = dbHelper.GetCharacterSeries(startSeries,endSeries);
 		startManagingCursor(cursor);
 		
 		while (cursor.moveToNext())
@@ -206,9 +205,7 @@ public class showflashcardActivity extends Activity {
 			entry.Pinyin = cursor.getString(dbHelper.C_PINYIN);
 			
 			series.add(entry);
-		}
-		
-		int foo = 1;
+		}			
 	}
 	
 
@@ -222,7 +219,6 @@ public class showflashcardActivity extends Activity {
 		
 		// num left to learn
 		bar.setProgress(charsLearnt+1);
-		//bar.setProgress(currentCard);
 	}
 	
 	private void ShowRevealCharacter() {
@@ -263,9 +259,7 @@ public class showflashcardActivity extends Activity {
 
 	
 	private void GenerateRandomSeries() {
-			
-		
-		//boolean done = false;
+
 		int toDo = MaxCard;
 		
 		while (toDo>0)
@@ -273,8 +267,7 @@ public class showflashcardActivity extends Activity {
 			int randomValue = GenerateRandomValue(1,MaxCard);
 			if ( !randomSeries.contains(randomValue))
 			{
-				toDo--;
-				//normalSeries.remove(randomValue);
+				toDo--;		
 				randomSeries.add(new Integer(randomValue));
 			}			
 		}

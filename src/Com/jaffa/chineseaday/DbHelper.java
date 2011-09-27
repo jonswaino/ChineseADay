@@ -37,6 +37,21 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	public DbHelper open() throws SQLException {
+		myDataBase = getWritableDatabase();
+	    return this;
+	}
+	
+	@Override
+	public synchronized void close() {
+
+		if (myDataBase != null)
+			myDataBase.close();
+
+		super.close();
+
+	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "onCreate called");
@@ -83,7 +98,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 	
 	public Cursor GetCharacterSeries(int startSeries, int endSeries) 
-	{
+	{		
 		String whereClause = String.format("rowid >= %d and rowid <= %d and read is null", startSeries, endSeries);		
 		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 	}
@@ -151,13 +166,5 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
-	@Override
-	public synchronized void close() {
-
-		if (myDataBase != null)
-			myDataBase.close();
-
-		super.close();
-
-	}
+	
 }
