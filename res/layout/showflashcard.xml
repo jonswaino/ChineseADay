@@ -63,13 +63,13 @@
 			android:orientation="horizontal" android:layout_height="62dp">
 			<Button android:layout_height="fill_parent"
 				android:layout_width="0dp" android:layout_weight="1" android:text="@string/wrong"
-				android:id="@+id/wrong" android:background="#FF0000"></Button>
+				android:id="@+id/wrong" ></Button>
 			<Button android:layout_height="fill_parent"
 				android:layout_width="0dp" android:layout_weight="1" android:text="@string/unsure"
-				android:id="@+id/unsure" android:background="#FFFF00"></Button>
+				android:id="@+id/unsure" ></Button>
 			<Button android:layout_height="fill_parent"
 				android:layout_width="0dp" android:layout_weight="1" android:text="@string/correct"
-				android:id="@+id/correct" android:background="#00FF00"></Button>
+				android:id="@+id/correct" ></Button>
 		</LinearLayout>
 	</LinearLayout>
 	</ViewFlipper>

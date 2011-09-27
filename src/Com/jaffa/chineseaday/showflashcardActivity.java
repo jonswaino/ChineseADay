@@ -137,14 +137,14 @@ public class showflashcardActivity extends Activity {
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
 				
+				dbHelper.AddCharacterToLearntList(series.get(currentCard).Id);
+				
 				// now remove character from list
 				series.remove(currentCard);
 				randomSeries.remove(currentCard);
 				
 				MaxCard--;	
-				
-				dbHelper.AddCharacterToLearntList(series.get(currentCard).Id);
-				
+							
 				charsLearnt++;
 			}
 		});

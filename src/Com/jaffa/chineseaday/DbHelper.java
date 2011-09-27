@@ -78,7 +78,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		
 		values.put("read",1);		
-	    String charArg = Integer.toString(charId);
+	    String charArg = Integer.toString(charId);	  
 	    myDataBase.update(DB_CHARTABLE, values, "id = ?", new String[] {charArg });	    		
 	}
 	
