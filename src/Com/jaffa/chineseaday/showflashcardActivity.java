@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -131,24 +137,8 @@ public class showflashcardActivity extends Activity {
 		btnKnowCard.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
-				Context context = getApplicationContext();
-				CharSequence text = "Added to your learnt list!";
-				int duration = Toast.LENGTH_SHORT;
-
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
 				
-
-				dbHelper.AddCharacterToLearntList(series.get(currentCard).Id);
-				
-				// now remove character from list
-				series.remove(currentCard);
-				randomSeries.remove(currentCard);
-				
-				MaxCard--;	
-							
-				charsLearnt++;
+				AddToLearntList();
 			}
 		});
 
@@ -161,6 +151,7 @@ public class showflashcardActivity extends Activity {
 		btnCorrect.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				AddToLearntList();
 				ReturnToInitialView();
 			}
 		});
@@ -170,6 +161,27 @@ public class showflashcardActivity extends Activity {
 				ReturnToInitialView();
 			}
 		});
+	}
+	
+	private void AddToLearntList()
+	{
+		CharSequence text = "Added to your learnt list!";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+		toast.show();
+		
+
+		dbHelper.AddCharacterToLearntList(series.get(currentCard).Id);
+		
+		// now remove character from list
+		series.remove(currentCard);
+		randomSeries.remove(currentCard);
+		
+		MaxCard--;								
+		charsLearnt++;
+		
+		ShowCharacter();
 	}
 	
 	private void ReturnToInitialView()
@@ -196,8 +208,7 @@ public class showflashcardActivity extends Activity {
 		Cursor cursor = dbHelper.GetCharacterSeries(startSeries,endSeries);
 		startManagingCursor(cursor);
 		
-		while (cursor.moveToNext())
-		{
+		while (cursor.moveToNext())	{
 			CharacterEntry entry = new CharacterEntry();
 			
 			entry.Character = cursor.getString(dbHelper.C_CHARACTER);
@@ -221,6 +232,23 @@ public class showflashcardActivity extends Activity {
 		bar.setProgress(charsLearnt+1);
 	}
 	
+	  public static String getCharPinyin(char c) {
+	        HanyuPinyinOutputFormat hanyuPinyinFormat = new HanyuPinyinOutputFormat();
+	        	        
+	        hanyuPinyinFormat.setToneType(HanyuPinyinToneType.WITH_TONE_MARK);
+	        String[] pinyinArray = null;
+	        try {
+	            pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c,
+	                    hanyuPinyinFormat);
+	        } catch (BadHanyuPinyinOutputFormatCombination e) {
+	            e.printStackTrace();
+	        }
+	        if (pinyinArray != null) {
+	            return pinyinArray[0];
+	        }
+	        return "";
+	    }
+	  
 	private void ShowRevealCharacter() {
 		
 		StringBuilder sbChars = new StringBuilder();
@@ -231,9 +259,10 @@ public class showflashcardActivity extends Activity {
 		CharacterEntry currentEntry = series.get(randomSeries.get(currentCard-1));
 		flashcharacter.setText(currentEntry.Character);
 		
-		pinyin.setText(currentEntry.Pinyin);
-		definition.setText(currentEntry.Definition);
-			
+		//pinyin.setText(currentEntry.Pinyin);
+		Character chineseChar = currentEntry.Character.charAt(0);
+		pinyin.setText(getCharPinyin(chineseChar));
+		definition.setText(currentEntry.Definition);					
 	}
 	
 	private void NextCharacter() {
@@ -255,9 +284,7 @@ public class showflashcardActivity extends Activity {
 		
 		Log.d(TAG, "Prev char idx now: " + currentCard);
 	}
-	
-
-	
+		
 	private void GenerateRandomSeries() {
 
 		int toDo = MaxCard;
@@ -273,6 +300,5 @@ public class showflashcardActivity extends Activity {
 		}
 		
 	}
-	
 	
 }
