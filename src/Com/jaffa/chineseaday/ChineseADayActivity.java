@@ -84,5 +84,17 @@ public class ChineseADayActivity extends ListActivity {
 		Intent startCardsIntent = new Intent(this, showflashcardActivity.class);
 		startActivity(startCardsIntent);
 		
+		/* offline: 
+		
+		get the id of the menu being clicked and set the min/max series
+		for the deck to be displayed.
+		
+		Bundle b = new Bundle(); 
+		b.putInt("minseries", 1);
+		b.putInt("maxseries", 100);		
+
+		startCardsIntent.putExtras(b);
+		
+		*/
 	}
 }

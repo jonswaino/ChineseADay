@@ -57,6 +57,12 @@ public class showflashcardActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// offline:
+		/* Bundle b = getIntent().getExtras(); 
+		int minseries = b.getInt("minseries", 0);
+		int maxseries = b.getInt("maxseries", 0);
+		*/
+		
 		series = new ArrayList<CharacterEntry>();
 		randomSeries = new ArrayList<Integer>(MaxCard);
 		
