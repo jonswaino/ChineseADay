@@ -52,8 +52,30 @@ public class ChineseADayActivity extends ListActivity {
 		// Use your own layout and point the adapter to the UI elements which
 		// contains the label
 		this.setListAdapter(new ArrayAdapter<String>(this, R.layout.rowlayout,
-				R.id.label, names));     
+				R.id.label, names));  
+
+		
     }
+	
+	// offline added...
+	/*@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        String[] projection = new String[] {Browser.BookmarkColumns._ID, 
+                                     Browser.BookmarkColumns.TITLE, 
+                                     Browser.BookmarkColumns.URL};
+        String[] displayFields = new String[] {Browser.BookmarkColumns.TITLE, 
+                                     Browser.BookmarkColumns.URL};
+        int[] displayViews = new int[] { android.R.id.text1, 
+                                     android.R.id.text2 };
+
+        Cursor cur = managedQuery(android.provider.Browser.BOOKMARKS_URI, 
+                       projection, null, null, null);
+        setListAdapter(new SimpleCursorAdapter(this, 
+                       android.R.layout.simple_list_item_2, cur, 
+                       displayFields, displayViews));
+    }*/
     
     @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
