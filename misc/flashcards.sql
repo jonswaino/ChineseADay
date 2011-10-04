@@ -48,3 +48,8 @@ where id > @min and id <= @max
 select minseries || ' to ' || maxseries from decks
 
 
+select * from characters as c 
+inner join decks as d on c.id between d.minseries and d.maxseries
+where d.minseries = 100
+
+select * from decks
