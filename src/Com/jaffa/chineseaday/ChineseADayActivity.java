@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 public class ChineseADayActivity extends ListActivity {
     /** Called when the activity is first created. */
@@ -20,81 +21,46 @@ public class ChineseADayActivity extends ListActivity {
                 
         DbHelper myDbHelper =  new DbHelper(this);
  
-        try {
- 
-        	myDbHelper.createDataBase();
- 
-	 	} catch (IOException ioe) {
-	 
-	 		throw new Error("Unable to create database");
-	 
+        try { 
+        	myDbHelper.createDataBase(); 
+	 	} catch (IOException ioe) {	 
+	 		throw new Error("Unable to create database");	 
 	 	}
  
 	 	try {
 	 
-	 		myDbHelper.openDataBase();
+	 		myDbHelper.openDataBaseForWrite();
 	 
 	 	}catch(SQLException sqle){
 	 
 	 		throw sqle;
 	 
 	 	}
-        
-		// Create an array of Strings, that will be put to our ListActivity
-		String[] names = new String[] { 
-				"100 characters",
-				"200-300 characters",
-				"300-400 characters",
-				"400-500 characters",
-				"View learnt words",
-				"View Progress"};
+        		
+	 	// create decks menu
+		String[] from = new String[] { DbHelper.C_CAPTION };
+		int[] to = new int[] { R.id.label };
 		
-		// Use your own layout and point the adapter to the UI elements which
-		// contains the label
-		this.setListAdapter(new ArrayAdapter<String>(this, R.layout.rowlayout,
-				R.id.label, names));  
-
+		Cursor decksCursor = myDbHelper.GetDecksMenu();
+		SimpleCursorAdapter deckAdapter = new SimpleCursorAdapter(this, R.layout.rowlayout, decksCursor,from, to);
+		setListAdapter(deckAdapter);
 		
     }
 	
-	// offline added...
-	/*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        String[] projection = new String[] {Browser.BookmarkColumns._ID, 
-                                     Browser.BookmarkColumns.TITLE, 
-                                     Browser.BookmarkColumns.URL};
-        String[] displayFields = new String[] {Browser.BookmarkColumns.TITLE, 
-                                     Browser.BookmarkColumns.URL};
-        int[] displayViews = new int[] { android.R.id.text1, 
-                                     android.R.id.text2 };
-
-        Cursor cur = managedQuery(android.provider.Browser.BOOKMARKS_URI, 
-                       projection, null, null, null);
-        setListAdapter(new SimpleCursorAdapter(this, 
-                       android.R.layout.simple_list_item_2, cur, 
-                       displayFields, displayViews));
-    }*/
     
     @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		Intent startCardsIntent = new Intent(this, showflashcardActivity.class);
-		startActivity(startCardsIntent);
+		Intent startCardsIntent = new Intent(this, showflashcardActivity.class);		
 		
-		/* offline: 
-		
-		get the id of the menu being clicked and set the min/max series
-		for the deck to be displayed.
-		
+		// get the id of the menu being clicked and set the min/max series
+		// for the deck to be displayed.		
 		Bundle b = new Bundle(); 
 		b.putInt("minseries", 1);
 		b.putInt("maxseries", 100);		
 
 		startCardsIntent.putExtras(b);
-		
-		*/
+		startActivity(startCardsIntent);
 	}
 }

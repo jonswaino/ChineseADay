@@ -1,0 +1,119 @@
+[33mcommit 5946553bb63c1e2e93993aa1e9d4bcfc39672678[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sun Oct 2 22:33:35 2011 +0100
+
+    .
+
+[33mcommit 84b0573ca091f3643fbec46dd8178b0bda8f4a27[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sun Oct 2 21:18:54 2011 +0100
+
+    Updated db with decks menu
+
+[33mcommit 260eb6223b1a22a73ccdbc3fa3f5d359cf94a560[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Wed Sep 28 13:34:12 2011 +0100
+
+    Pinyin helper added
+
+[33mcommit 53982d1a75816c38f89f8b53e2b16098de34680d[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Tue Sep 27 15:56:38 2011 +0100
+
+    Use functions off dbHelper
+
+[33mcommit 5a457e4a538df9bae95c0051e22108e29a990e75[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Tue Sep 27 14:09:24 2011 +0100
+
+    added .gitignore
+
+[33mcommit 1efabe795cecec2c71fb01e40cde183a93189446[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Mon Sep 26 19:46:54 2011 +0100
+
+    New database
+
+[33mcommit 15edb0c495ae6fc4814d3125c58b577155840dcf[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sat Sep 24 17:45:09 2011 +0100
+
+    update
+
+[33mcommit 7967b799553457260b4236b233df309eb46afa4b[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sat Sep 24 17:30:37 2011 +0100
+
+    General update
+
+[33mcommit 8edea96bae89938326d5db384f9524608fd3ff9a[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Fri Sep 23 19:17:38 2011 +0100
+
+    Reveal card now works
+
+[33mcommit 6f52fbc781edac74cd24d0c32a1bcbde94b1b330[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Thu Sep 22 21:11:52 2011 +0100
+
+    minor update
+
+[33mcommit 50ea307ddaa0d8a2d16633042e397d86491a35fb[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Thu Sep 22 20:32:03 2011 +0100
+
+    Progress bar added + minor updates
+
+[33mcommit afe00dea234504ce62510339907e38d6f79d7506[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Wed Sep 21 13:38:14 2011 +0100
+
+    Update
+
+[33mcommit 310cf9a3b693ca0d03cb9e60d09fefab92bb0ab4[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Tue Sep 20 22:08:44 2011 +0100
+
+    Random series generator
+
+[33mcommit e45c4b913c3ee1bcaf0e0c127f45772fa9430a7e[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Tue Sep 20 13:39:15 2011 +0100
+
+    .
+
+[33mcommit d95806887b3bbf32a2b998f917cc3eaec6c710da[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Mon Sep 19 23:44:06 2011 +0100
+
+    First stable version with working db
+
+[33mcommit 4fd68d3d7c90d508047f8f408396fe615ca80d02[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sun Sep 18 00:04:50 2011 +0100
+
+    .
+
+[33mcommit b29a6e5e326e491a0ab325403d9f2edba484084b[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sat Sep 17 23:40:54 2011 +0100
+
+    update
+
+[33mcommit 7cc4c82f0029caaf11a6bd4e288b5047c67f38f9[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sat Sep 17 18:48:01 2011 +0100
+
+    new database
+
+[33mcommit 54d66f98bb5d7f51cab36e80f7ff0ee2c60cabb0[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sat Sep 17 16:25:06 2011 +0100
+
+    added files
+
+[33mcommit 4038360bfe1b3b3f4ee55ac67ea9fda45a3be975[m
+Author: Jon Swain <jonswaino@gmail.com>
+Date:   Sat Sep 17 16:23:21 2011 +0100
+
+    first commit

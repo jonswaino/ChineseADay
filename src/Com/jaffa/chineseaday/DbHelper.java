@@ -16,13 +16,21 @@ import android.util.Log;
 
 public class DbHelper extends SQLiteOpenHelper {
 	private static final String TAG = "DbHelper";
-
-	static final String DB_NAME = "caddata.sqlite";
-	static final int DB_VERSION = 1;
+	
+	static final int DB_VERSION = 4;
+	static final String DB_NAME = "caddata.sqlite"; // + DB_VERSION;
+	
 	static final String DB_CHARTABLE = "characters";
+	static final String DB_DECKTABLE = "decks";
+	
 	static final int C_CHARACTER = 1;
 	static final int C_PINYIN = 2;
 	static final int C_DEFINITION = 3;
+	
+	static final String C_CAPTION = "caption";
+	static final int C_MINSERIES = 2;
+	static final int C_MAXSERIES = 3;
+		
 	private static String DB_PATH = "";
 	private Context myContext;
 	private SQLiteDatabase myDataBase;
@@ -33,12 +41,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
 		DB_PATH = "/data/data/"
 				+ context.getApplicationContext().getPackageName()
-				+ "/databases/";
-
+				+ "/databases/";			
 	}
 
 	public DbHelper open() throws SQLException {
-		myDataBase = getWritableDatabase();
+		//myDataBase = getWritableDatabase();
+		myDataBase =  getWritableDatabase();
+		
+		Log.d(TAG, "DbHelper Opening Version: " +  this.myDataBase.getVersion());
 	    return this;
 	}
 	
@@ -56,8 +66,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		Log.d(TAG, "onCreate called");
 
-		try {
-			Log.d(TAG, "Copying database...");
+		try {			
 			createDataBase();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -67,18 +76,24 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-
+		if ( newVersion > oldVersion)
+		{
+			Log.d(TAG, "New database version exists for upgrade.");			
+			try {
+				Log.d(TAG, "Copying database...");
+				copyDataBase();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		}
 	}
 
 	public void createDataBase() throws IOException {
 
 		boolean dbExist = checkDataBase();
 
-		if (dbExist) {
-			// do nothing - database already exist
-		} else {
-			this.getReadableDatabase();
+		if (!dbExist) {			
 
 			try {
 				copyDataBase();
@@ -86,6 +101,8 @@ public class DbHelper extends SQLiteOpenHelper {
 				throw new Error("Error copying database");
 			}
 		}
+		
+		openDataBaseForRead();
 	}
 	
 	public void AddCharacterToLearntList(int charId)
@@ -97,10 +114,16 @@ public class DbHelper extends SQLiteOpenHelper {
 	    myDataBase.update(DB_CHARTABLE, values, "id = ?", new String[] {charArg });	    		
 	}
 	
-	public Cursor GetCharacterSeries(int startSeries, int endSeries) 
+	public Cursor GetCharacterSeries(int startSeries) 
 	{		
-		String whereClause = String.format("rowid >= %d and rowid <= %d and read is null", startSeries, endSeries);		
-		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
+		String query = "select * from characters as c " +
+		               "inner join decks as d on c.id between d.minseries and d.maxseries " +
+		               "where d.enabled = 1 and d.minseries = " + startSeries;
+		
+		return myDataBase.rawQuery(query, null);
+		
+//				String whereClause = String.format("rowid >= %d and rowid <= %d and read is null", startSeries, endSeries);		
+//		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 	}
 	
 	public Cursor GetLearntCharacters() 
@@ -108,6 +131,16 @@ public class DbHelper extends SQLiteOpenHelper {
 		String whereClause = "read = 1";                                                          
 		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 	}
+	
+	public Cursor GetDecksMenu()
+	{		
+		String query = "select rowid _id, minseries || ' to ' || maxseries as caption, minseries, maxseries from decks " +
+					   "order by minseries asc";
+		
+		return myDataBase.rawQuery(query, null);
+		
+		//return myDataBase.query(DbHelper.DB_DECKTABLE, null, null, null, null,null,null);
+	}	
 
 	private boolean checkDataBase() {
 
@@ -126,7 +159,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		}
 
 		if (checkDB != null) {
-			checkDB.close();
+			checkDB.close();			
 		}
 
 		return checkDB != null ? true : false;
@@ -155,15 +188,24 @@ public class DbHelper extends SQLiteOpenHelper {
 		myOutput.flush();
 		myOutput.close();
 		myInput.close();
+		
+		myDataBase.setVersion(DB_VERSION);
 	}
 
-	public void openDataBase() throws SQLException {
+	public void openDataBaseForRead() throws SQLException {
 
 		// Open the database
-		String myPath = DB_PATH + DB_NAME;
-		myDataBase = SQLiteDatabase.openDatabase(myPath, null,
-				SQLiteDatabase.OPEN_READONLY);
+		String myPath = DB_PATH + DB_NAME;		
+		myDataBase = SQLiteDatabase.openDatabase(myPath, null,	SQLiteDatabase.OPEN_READONLY);
+		Log.d(TAG, "DbHelper Opening Readable Version: " +  myDataBase.getVersion());
+	}
+	
+	public void openDataBaseForWrite() throws SQLException {
 
+		// Open the database
+		String myPath = DB_PATH + DB_NAME;		
+		myDataBase = SQLiteDatabase.openDatabase(myPath, null,	SQLiteDatabase.OPEN_READWRITE | SQLiteDatabase.NO_LOCALIZED_COLLATORS );
+		Log.d(TAG, "DbHelper Opening Writeable Version: " +  myDataBase.getVersion());
 	}
 
 	

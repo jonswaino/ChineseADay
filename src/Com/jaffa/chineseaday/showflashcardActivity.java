@@ -38,6 +38,7 @@ public class showflashcardActivity extends Activity {
 	List<Integer> randomSeries;
 	
 	int MaxCard = MAX_SERIES;
+	int MinSeries;
 	int currentCard = 1;
 	int charsLearnt = 0;
 	
@@ -56,18 +57,15 @@ public class showflashcardActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// offline:
-		/* Bundle b = getIntent().getExtras(); 
-		int minseries = b.getInt("minseries", 0);
-		int maxseries = b.getInt("maxseries", 0);
-		*/
+				
+		Bundle b = getIntent().getExtras(); 
+		MinSeries = b.getInt("minseries", 1);
 		
 		series = new ArrayList<CharacterEntry>();
 		randomSeries = new ArrayList<Integer>(MaxCard);
 		
 		dbHelper = new DbHelper(getApplicationContext());
-		dbHelper.open();
+		dbHelper.openDataBaseForWrite();
 		//db = dbHelper.getReadableDatabase();
 				
 		setContentView(R.layout.showflashcard);		
@@ -207,11 +205,8 @@ public class showflashcardActivity extends Activity {
 	}
 	
 	private void LoadInCharacterSeries() {
-		
-		int startSeries = 1;
-		int endSeries = MaxCard;		
-		
-		Cursor cursor = dbHelper.GetCharacterSeries(startSeries,endSeries);
+						
+		Cursor cursor = dbHelper.GetCharacterSeries(MinSeries);
 		startManagingCursor(cursor);
 		
 		while (cursor.moveToNext())	{
