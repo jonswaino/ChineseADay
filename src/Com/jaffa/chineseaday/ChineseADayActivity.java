@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -13,13 +14,13 @@ import android.widget.SimpleCursorAdapter;
 
 public class ChineseADayActivity extends ListActivity {
     /** Called when the activity is first created. */
-	
+	DbHelper myDbHelper;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
                 
-        DbHelper myDbHelper =  new DbHelper(this);
+        myDbHelper = new DbHelper(this);
  
         try { 
         	myDbHelper.createDataBase(); 
@@ -51,16 +52,32 @@ public class ChineseADayActivity extends ListActivity {
     @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-
-		Intent startCardsIntent = new Intent(this, showflashcardActivity.class);		
+				
+		int deckType = myDbHelper.GetDeckType((int)id);
 		
-		// get the id of the menu being clicked and set the min/max series
-		// for the deck to be displayed.		
-		Bundle b = new Bundle(); 
-		b.putInt("minseries", 1);
-		b.putInt("maxseries", 100);		
+		switch ( deckType )
+		{
+		case 0:
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(Uri.parse("market://details?id=com.android.example"));
+			startActivity(intent);
+			break;
+			
+		case 1:
+			Intent startCardsIntent = new Intent(this, showflashcardActivity.class);		
+			
+			// get the id of the menu being clicked and set the min/max series
+			// for the deck to be displayed.		
+			Bundle b = new Bundle(); 
+			b.putInt("minseries", 1);
+			b.putInt("maxseries", 100);		
 
-		startCardsIntent.putExtras(b);
-		startActivity(startCardsIntent);
+			startCardsIntent.putExtras(b);
+			startActivity(startCardsIntent);
+			break;
+			
+		}
+		
+
 	}
 }

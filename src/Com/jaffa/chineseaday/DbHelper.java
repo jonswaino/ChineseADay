@@ -30,6 +30,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	static final String C_CAPTION = "caption";
 	static final int C_MINSERIES = 2;
 	static final int C_MAXSERIES = 3;
+	static final int C_ENABLED = 1;
 		
 	private static String DB_PATH = "";
 	private Context myContext;
@@ -141,6 +142,17 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		//return myDataBase.query(DbHelper.DB_DECKTABLE, null, null, null, null,null,null);
 	}	
+	
+	public int GetDeckType(int minSeries)
+	{
+		String query = "select enabled from decks where rowid = " + minSeries; 				   
+	
+		Cursor cursor = myDataBase.rawQuery(query, null);
+		cursor.moveToNext();
+		
+		return cursor.getInt(C_ENABLED);
+	}
+	
 
 	private boolean checkDataBase() {
 
@@ -197,6 +209,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		// Open the database
 		String myPath = DB_PATH + DB_NAME;		
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null,	SQLiteDatabase.OPEN_READONLY);
+
 		Log.d(TAG, "DbHelper Opening Readable Version: " +  myDataBase.getVersion());
 	}
 	
@@ -208,5 +221,6 @@ public class DbHelper extends SQLiteOpenHelper {
 		Log.d(TAG, "DbHelper Opening Writeable Version: " +  myDataBase.getVersion());
 	}
 
+	
 	
 }
