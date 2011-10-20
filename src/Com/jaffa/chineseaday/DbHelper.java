@@ -122,9 +122,6 @@ public class DbHelper extends SQLiteOpenHelper {
 		               "where d.enabled = 1 and d.minseries = " + startSeries;
 		
 		return myDataBase.rawQuery(query, null);
-		
-//				String whereClause = String.format("rowid >= %d and rowid <= %d and read is null", startSeries, endSeries);		
-//		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 	}
 	
 	public Cursor GetLearntCharacters() 
@@ -138,9 +135,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		String query = "select rowid _id, minseries || ' to ' || maxseries as caption, minseries, maxseries from decks " +
 					   "order by minseries asc";
 		
-		return myDataBase.rawQuery(query, null);
-		
-		//return myDataBase.query(DbHelper.DB_DECKTABLE, null, null, null, null,null,null);
+		return myDataBase.rawQuery(query, null);	
 	}	
 	
 	public int GetDeckType(int minSeries)
@@ -150,10 +145,18 @@ public class DbHelper extends SQLiteOpenHelper {
 		Cursor cursor = myDataBase.rawQuery(query, null);
 		cursor.moveToNext();
 		
-		return cursor.getInt(C_ENABLED);
-	}
+		return cursor.getInt(cursor.getColumnIndex("enabled"));
+	}	  
 	
-
+	public Cursor GetDeckSeries(int minSeries)
+	{
+		String query = "select enabled, minseries, maxser from decks where rowid = " + minSeries; 				   
+	
+		Cursor cursor = myDataBase.rawQuery(query, null);
+		cursor.moveToNext();
+		return cursor;
+	}	
+    
 	private boolean checkDataBase() {
 
 		SQLiteDatabase checkDB = null;

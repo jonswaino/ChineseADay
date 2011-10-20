@@ -53,7 +53,12 @@ public class ChineseADayActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 				
-		int deckType = myDbHelper.GetDeckType((int)id);
+		//int deckType = myDbHelper.GetDeckType((int)id);
+		//DeckSeries series = myDbHelper.GetDeckSeries((int)id);
+		Cursor cursor = myDbHelper.GetDeckSeries((int)id);
+		int deckType = cursor.getInt(cursor.getColumnIndex("enabled"));
+		int minseries = cursor.getInt(cursor.getColumnIndex("minseries"));
+		int maxseries = cursor.getInt(cursor.getColumnIndex("maxseries"));			
 		
 		switch ( deckType )
 		{
@@ -64,13 +69,15 @@ public class ChineseADayActivity extends ListActivity {
 			break;
 			
 		case 1:
+			
+			
 			Intent startCardsIntent = new Intent(this, showflashcardActivity.class);		
 			
 			// get the id of the menu being clicked and set the min/max series
 			// for the deck to be displayed.		
 			Bundle b = new Bundle(); 
-			b.putInt("minseries", 1);
-			b.putInt("maxseries", 100);		
+			b.putInt("minseries", minseries);
+			b.putInt("maxseries", maxseries);		
 
 			startCardsIntent.putExtras(b);
 			startActivity(startCardsIntent);
