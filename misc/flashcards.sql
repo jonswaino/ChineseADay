@@ -53,3 +53,10 @@ inner join decks as d on c.id between d.minseries and d.maxseries
 where d.minseries = 100
 
 select * from decks
+
+select * from decks as top 
+inner join decks as subdeck on subdeck.minseries >= top.minseries and subdeck.minseries <= top.maxseries
+where top.topmenu = 'true' and top.minseries = 1
+
+select * from decks as top
+where top.topmenu = 'true'
