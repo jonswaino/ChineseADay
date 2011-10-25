@@ -81,7 +81,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		{
 			Log.d(TAG, "New database version exists for upgrade.");			
 			try {
-				Log.d(TAG, "Copying database...");
+				
 				copyDataBase();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -130,6 +130,13 @@ public class DbHelper extends SQLiteOpenHelper {
 		return myDataBase.query(DbHelper.DB_CHARTABLE, null, whereClause, null, null,null,null);
 	}
 	
+	public Cursor GetTopDecksMenu()
+	{
+		String query = "select distinct top.rowid _id, top.caption, top.minseries, top.maxseries from decks top " +
+					   "inner join decks subdeck on subdeck.minseries >= top.minseries and subdeck.minseries <= top.maxseries where top.topmenu = 1";		
+		
+		return myDataBase.rawQuery(query, null);
+	}
 	public Cursor GetDecksMenu()
 	{		
 		String query = "select rowid _id, minseries || ' to ' || maxseries as caption, minseries, maxseries from decks " +
@@ -150,7 +157,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	public Cursor GetDeckSeries(int minSeries)
 	{
-		String query = "select enabled, minseries, maxser from decks where rowid = " + minSeries; 				   
+		String query = "select enabled, minseries, maxseries from decks where rowid = " + minSeries; 				   
 	
 		Cursor cursor = myDataBase.rawQuery(query, null);
 		cursor.moveToNext();
@@ -183,6 +190,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	private void copyDataBase() throws IOException {
 
+		Log.d(TAG, "Copying database...");
+		
 		// Open your local db as the input stream
 		InputStream myInput = myContext.getAssets().open(DB_NAME);
 

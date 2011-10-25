@@ -42,7 +42,8 @@ public class ChineseADayActivity extends ListActivity {
 		String[] from = new String[] { DbHelper.C_CAPTION };
 		int[] to = new int[] { R.id.label };
 		
-		Cursor decksCursor = myDbHelper.GetDecksMenu();
+		//Cursor decksCursor = myDbHelper.GetDecksMenu();
+		Cursor decksCursor = myDbHelper.GetTopDecksMenu();
 		SimpleCursorAdapter deckAdapter = new SimpleCursorAdapter(this, R.layout.rowlayout, decksCursor,from, to);
 		setListAdapter(deckAdapter);
 		
@@ -55,34 +56,46 @@ public class ChineseADayActivity extends ListActivity {
 				
 		//int deckType = myDbHelper.GetDeckType((int)id);
 		//DeckSeries series = myDbHelper.GetDeckSeries((int)id);
+		
 		Cursor cursor = myDbHelper.GetDeckSeries((int)id);
 		int deckType = cursor.getInt(cursor.getColumnIndex("enabled"));
 		int minseries = cursor.getInt(cursor.getColumnIndex("minseries"));
-		int maxseries = cursor.getInt(cursor.getColumnIndex("maxseries"));			
+		int maxseries = cursor.getInt(cursor.getColumnIndex("maxseries"));	
+		int topmenu = cursor.getInt(cursor.getColumnIndex("topmenu"));
+		
+		if ( topmenu == 1 )
+		{
+			// create decks menu
+			String[] from = new String[] { DbHelper.C_CAPTION };
+			int[] to = new int[] { R.id.label };
+			
+			//Cursor decksCursor = myDbHelper.GetDecksMenu();
+			Cursor decksCursor = myDbHelper.GetDeckSeries((int)id);
+			SimpleCursorAdapter deckAdapter = new SimpleCursorAdapter(this, R.layout.rowlayout, decksCursor,from, to);			
+			setListAdapter(deckAdapter);
+			return;
+		}
 		
 		switch ( deckType )
 		{
-		case 0:
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setData(Uri.parse("market://details?id=com.android.example"));
-			startActivity(intent);
-			break;
-			
-		case 1:
-			
-			
-			Intent startCardsIntent = new Intent(this, showflashcardActivity.class);		
-			
-			// get the id of the menu being clicked and set the min/max series
-			// for the deck to be displayed.		
-			Bundle b = new Bundle(); 
-			b.putInt("minseries", minseries);
-			b.putInt("maxseries", maxseries);		
-
-			startCardsIntent.putExtras(b);
-			startActivity(startCardsIntent);
-			break;
-			
+			case 0:
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse("market://details?id=com.android.example"));
+				startActivity(intent);
+				break;
+				
+			case 1:				
+				Intent startCardsIntent = new Intent(this, showflashcardActivity.class);		
+				
+				// get the id of the menu being clicked and set the min/max series
+				// for the deck to be displayed.		
+				Bundle b = new Bundle(); 
+				b.putInt("minseries", minseries);
+				b.putInt("maxseries", maxseries);		
+	
+				startCardsIntent.putExtras(b);
+				startActivity(startCardsIntent);
+				break;			
 		}
 		
 
